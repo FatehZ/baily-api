@@ -1,10 +1,9 @@
 package com.ktxdevelopment.bailyapi.ui.controller;
 
 import com.ktxdevelopment.bailyapi.services.ProductService;
-import com.ktxdevelopment.bailyapi.shared.ProductDto;
-import com.ktxdevelopment.bailyapi.shared.UserDto;
-import com.ktxdevelopment.bailyapi.ui.response.ProductRest;
-import com.ktxdevelopment.bailyapi.ui.response.UserRest;
+import com.ktxdevelopment.bailyapi.shared.product.ProductDto;
+import com.ktxdevelopment.bailyapi.ui.response.product.ProductRest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +29,8 @@ public class ProductController {
 
         List<ProductDto> productDtoList = productService.getPaginatedProducts(page, limit);
 
+        ModelMapper modelMapper = new ModelMapper();
+
         for (ProductDto dto : productDtoList) { products.add(modelMapper.map(dto, ProductRest.class)); }
 
         return products;
@@ -42,6 +43,8 @@ public class ProductController {
     public List<ProductRest> getAllProducts(){
         List<ProductRest> products = new ArrayList<>();
         List<ProductDto> productDtoList = productService.getAllProducts();
+        ModelMapper modelMapper = new ModelMapper();
+
         for (ProductDto dto : productDtoList) { products.add(modelMapper.map(dto, ProductRest.class)); }
         return products;
     }

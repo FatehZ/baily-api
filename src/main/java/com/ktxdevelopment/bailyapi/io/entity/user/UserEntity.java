@@ -1,5 +1,6 @@
-package com.ktxdevelopment.bailyapi.io.entity;
+package com.ktxdevelopment.bailyapi.io.entity.user;
 
+import com.ktxdevelopment.bailyapi.io.entity.order.OrderEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

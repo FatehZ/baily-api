@@ -1,18 +1,22 @@
 package com.ktxdevelopment.bailyapi.services.impl;
 
-import com.ktxdevelopment.bailyapi.io.entity.UserEntity;
+import com.ktxdevelopment.bailyapi.exceptions.UserServiceException;
+import com.ktxdevelopment.bailyapi.io.entity.user.UserEntity;
 import com.ktxdevelopment.bailyapi.io.repo.UserRepository;
 import com.ktxdevelopment.bailyapi.services.UserService;
-import com.ktxdevelopment.bailyapi.shared.UserDto;
 import com.ktxdevelopment.bailyapi.shared.Utils;
+import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
+import com.ktxdevelopment.bailyapi.shared.user.UserDto;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,27 +35,20 @@ public class UserServiceImpl implements UserService {
 
         if (storedUserEntity != null) throw new RuntimeException("Record already exists");
 
-        for (int i=0; i <userDto.getAddresses().size(); i++) {
-            AddressDto address = userDto.getAddresses().get(i);
-            address.setUserDetails(userDto);
-            address.setAddressId(utils.generateAddressId(20));
-            userDto.getAddresses().set(i, address);
-        }
-
-        UserEntity entity = modelMapper.map(userDto, UserEntity.class);
+        UserEntity entity = mapper().map(userDto, UserEntity.class);
         entity.setEncryptedPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         entity.setUserId(utils.generateUserId(20));
 
         UserEntity storedUser = userRepo.save(entity);
 
-        return modelMapper.map(storedUser ,UserDto.class);
+        return mapper().map(storedUser ,UserDto.class);
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
         UserEntity userEntity = userRepo.findByEmail(email);
         if (userEntity == null) throw new UsernameNotFoundException(email);
-        return modelMapper.map(userEntity, UserDto.class);
+        return mapper().map(userEntity, UserDto.class);
     }
 
     @Override
@@ -59,7 +56,7 @@ public class UserServiceImpl implements UserService {
         UserEntity entity = userRepo.findByUserId(id);
         if (entity == null) throw new UsernameNotFoundException(id);
 
-        return modelMapper.map(entity, UserDto.class);
+        return mapper().map(entity, UserDto.class);
     }
 
     @Override
@@ -70,20 +67,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<OrderDto> getOrdersOfUser(String userId) {
+        UserEntity user = userRepo.findByUserId(userId);
+
+        if (user == null) throw new UserServiceException("User not found");
+
+        Type type = new TypeToken<List<OrderDto>>() {}.getType();
+
+        return mapper().map(user.getOrders(), type);
+    }
+
+    @Override
     public UserDto updateUser(String id, UserDto userDto) {
 
         UserEntity currentEntity = userRepo.findByUserId(id);
-
         if (currentEntity == null) throw new RuntimeException("Record already exists");
-
-        currentEntity.setLastName(userDto.getLastName());
-        currentEntity.setFirstName(userDto.getFirstName());
-
+        currentEntity.setUsername(userDto.getUsername());
         UserEntity newEntity = userRepo.save(currentEntity);
 
-
-        return modelMapper.map(newEntity ,UserDto.class);
-
+        return mapper().map(newEntity ,UserDto.class);
     }
 
 
@@ -92,5 +94,9 @@ public class UserServiceImpl implements UserService {
         UserEntity entity = userRepo.findByEmail(email);
         if (entity == null) throw new UsernameNotFoundException(email);
         return new User(entity.getEmail(), entity.getEncryptedPassword(), new ArrayList<>());
+    }
+
+    private ModelMapper mapper() {
+        return new ModelMapper();
     }
 }

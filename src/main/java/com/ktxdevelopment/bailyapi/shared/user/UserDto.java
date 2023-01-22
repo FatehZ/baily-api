@@ -1,5 +1,6 @@
-package com.ktxdevelopment.bailyapi.shared;
+package com.ktxdevelopment.bailyapi.shared.user;
 
+import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

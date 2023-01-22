@@ -1,15 +1,16 @@
-package com.ktxdevelopment.bailyapi.io.entity;
+package com.ktxdevelopment.bailyapi.io.entity.product;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.ktxdevelopment.bailyapi.io.entity.category.CategoryEntity;
+import com.ktxdevelopment.bailyapi.io.entity.order.ProductOrderModelEntity;
+import com.ktxdevelopment.bailyapi.io.entity.category.SubcategoryEntity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -17,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "products")
-public class ProductEntity {
+public class ProductEntity implements Serializable {
 
     @Id
     @GeneratedValue
@@ -26,11 +27,13 @@ public class ProductEntity {
     @Column(nullable = false)
     private String productId;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "categories_id")
     private CategoryEntity category;
 
-    @Column(nullable = false)
-    private CategoryEntity subCategory;
+    @ManyToOne
+    @JoinColumn(name = "subcategories_id")
+    private SubcategoryEntity subcategory;
 
     @Column(nullable = false)
     private String name;
@@ -50,6 +53,10 @@ public class ProductEntity {
     @Column(nullable = false)
     private Boolean available = true;
 
-    @Column(nullable = true)
+    @Column
     private String about;
+
+    @ManyToMany
+    @JoinColumn(name = "orderProducts_id")
+    private ProductOrderModelEntity orderProductDetails;
 }

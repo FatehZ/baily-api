@@ -1,6 +1,7 @@
 package com.ktxdevelopment.bailyapi.services;
 
-import com.ktxdevelopment.bailyapi.shared.UserDto;
+import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
+import com.ktxdevelopment.bailyapi.shared.user.UserDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +14,6 @@ public interface UserService extends UserDetailsService {
     UserDto getUserByUserId(String id);
     UserDto updateUser(String id, UserDto userDto);
     void deleteUserByUserId(String id);
+
+    List<OrderDto> getOrdersOfUser(String userId);
 }

@@ -1,4 +1,5 @@
-package com.ktxdevelopment.bailyapi.io.entity;
+package com.ktxdevelopment.bailyapi.io.entity.order;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,26 +10,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "orders")
-public class OrderEntity {
-
+@Entity(name = "order_states")
+public class OrderStateEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private String orderId;
+    @Column(nullable = true)
+    private String finished;
 
-    @Column(nullable = false)
-    private Double totalPrice;
+    @Column(nullable = true)
+    private String ordered;
 
-    @Column(nullable = false)
-    private Double totalDiscount;
-
-    @Column(nullable = false)
-    private OrderStateEntity state;
+    @Column(nullable = true)
+    private String cancelled;
 }

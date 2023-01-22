@@ -1,12 +1,10 @@
 package com.ktxdevelopment.bailyapi.services.impl;
 
-import com.ktxdevelopment.bailyapi.io.entity.ProductEntity;
-import com.ktxdevelopment.bailyapi.io.entity.UserEntity;
+import com.ktxdevelopment.bailyapi.io.entity.product.ProductEntity;
 import com.ktxdevelopment.bailyapi.io.repo.ProductRepository;
 import com.ktxdevelopment.bailyapi.services.ProductService;
-import com.ktxdevelopment.bailyapi.shared.ProductDto;
-import com.ktxdevelopment.bailyapi.shared.UserDto;
-import com.ktxdevelopment.bailyapi.ui.response.ProductRest;
+import com.ktxdevelopment.bailyapi.shared.product.ProductDto;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
         List<ProductEntity> productEntities = productRepo.findAll();
 
         for (ProductEntity pr : productEntities) {
-            products.add(modelMapper.map(pr, ProductDto.class));
+            products.add(mapper().map(pr, ProductDto.class));
         }
         return products;
     }
@@ -37,8 +35,12 @@ public class ProductServiceImpl implements ProductService {
         List<ProductEntity> productEntities = productRepo.findAll(pageable).getContent();
 
         for (ProductEntity pr : productEntities) {
-            products.add(modelMapper.map(pr, ProductDto.class));
+            products.add(mapper().map(pr, ProductDto.class));
         }
         return products;
+    }
+
+    private ModelMapper mapper() {
+        return new ModelMapper();
     }
 }

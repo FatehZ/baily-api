@@ -3,7 +3,7 @@ package com.ktxdevelopment.bailyapi.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktxdevelopment.bailyapi.SpringApplicationContext;
 import com.ktxdevelopment.bailyapi.services.UserService;
-import com.ktxdevelopment.bailyapi.shared.UserDto;
+import com.ktxdevelopment.bailyapi.shared.user.UserDto;
 import com.ktxdevelopment.bailyapi.ui.request.UserLoginRequestModel;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
