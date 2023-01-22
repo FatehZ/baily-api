@@ -34,7 +34,7 @@ public class OrderEntity implements Serializable {
     private OrderStateEntity state;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "users_userId")
     private UserEntity userDetails;
 
     private List<ProductOrderModelEntity> products;

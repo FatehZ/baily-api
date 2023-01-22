@@ -1,4 +1,4 @@
-package com.ktxdevelopment.bailyapi.ui.request;
+package com.ktxdevelopment.bailyapi.ui.request.category;
 
 
 import lombok.AllArgsConstructor;

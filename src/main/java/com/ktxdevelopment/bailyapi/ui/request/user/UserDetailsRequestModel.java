@@ -1,11 +1,9 @@
-package com.ktxdevelopment.bailyapi.ui.request;
+package com.ktxdevelopment.bailyapi.ui.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

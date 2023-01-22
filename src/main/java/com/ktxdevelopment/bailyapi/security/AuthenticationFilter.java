@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktxdevelopment.bailyapi.SpringApplicationContext;
 import com.ktxdevelopment.bailyapi.services.UserService;
 import com.ktxdevelopment.bailyapi.shared.user.UserDto;
-import com.ktxdevelopment.bailyapi.ui.request.UserLoginRequestModel;
+import com.ktxdevelopment.bailyapi.ui.request.user.UserLoginRequestModel;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;

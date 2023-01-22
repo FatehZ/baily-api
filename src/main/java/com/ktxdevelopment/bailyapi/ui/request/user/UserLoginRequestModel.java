@@ -1,4 +1,4 @@
-package com.ktxdevelopment.bailyapi.ui.request;
+package com.ktxdevelopment.bailyapi.ui.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -7,7 +7,8 @@ import com.ktxdevelopment.bailyapi.services.OrderService;
 import com.ktxdevelopment.bailyapi.services.UserService;
 import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
 import com.ktxdevelopment.bailyapi.shared.user.UserDto;
-import com.ktxdevelopment.bailyapi.ui.request.UserDetailsRequestModel;
+import com.ktxdevelopment.bailyapi.ui.request.order.OrderRequestModel;
+import com.ktxdevelopment.bailyapi.ui.request.user.UserDetailsRequestModel;
 import com.ktxdevelopment.bailyapi.ui.response.models.ErrorMessages;
 import com.ktxdevelopment.bailyapi.ui.response.models.OperationStatusModel;
 import com.ktxdevelopment.bailyapi.ui.response.models.RequestOperationStatus;
@@ -125,4 +126,13 @@ public class UserController {
         }
         throw new OrderServiceException("Order does not exist");
     }
+
+    @PostMapping(path = "/{userId}/orders", produces = { MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE } )
+    public OrderRest createNewOrder(@RequestBody OrderRequestModel order) {
+        OrderDto orderRest = orderService.createOrder(order);
+         Type listType = new TypeToken<OrderRest>() {}.getType();
+        return mapper().map(orderRest, OrderRest.class);
+    }
+
+    ModelMapper mapper() {return new ModelMapper();}
 }
