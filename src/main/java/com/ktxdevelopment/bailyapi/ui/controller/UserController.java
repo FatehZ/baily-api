@@ -1,6 +1,5 @@
 package com.ktxdevelopment.bailyapi.ui.controller;
 
-import com.google.common.reflect.TypeToken;
 import com.ktxdevelopment.bailyapi.exceptions.OrderServiceException;
 import com.ktxdevelopment.bailyapi.exceptions.UserServiceException;
 import com.ktxdevelopment.bailyapi.services.OrderService;
@@ -14,12 +13,11 @@ import com.ktxdevelopment.bailyapi.ui.response.models.OperationStatusModel;
 import com.ktxdevelopment.bailyapi.ui.response.models.RequestOperationStatus;
 import com.ktxdevelopment.bailyapi.ui.response.order.OrderRest;
 import com.ktxdevelopment.bailyapi.ui.response.user.UserRest;
-import org.modelmapper.ModelMapper;
+import com.ktxdevelopment.bailyapi.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,9 +34,8 @@ public class UserController {
 
     @GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE })
     public UserRest getUser(@PathVariable String id) {
-        ModelMapper modelMapper = new ModelMapper();
         UserDto dto = userService.getUserByUserId(id);
-        return modelMapper.map(dto, UserRest.class);
+        return mapper().mapComplex(dto, UserRest.class);
     }
 
 
@@ -52,11 +49,9 @@ public class UserController {
         if (userDetails.getUsername().isBlank() || userDetails.getEmail().isBlank() || userDetails.getPassword().isBlank())
             throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        ModelMapper modelMapper = new ModelMapper();
-
-        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+        UserDto userDto = mapper().mapComplex(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
-        return modelMapper.map(createdUser, UserRest.class);
+        return mapper().map(createdUser, UserRest.class);
     }
 
     @PutMapping(
@@ -65,16 +60,14 @@ public class UserController {
             produces = {MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE }
     )
     public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails) throws RuntimeException{
-        UserRest userRest = new UserRest();
-        ModelMapper modelMapper = new ModelMapper();
 
         if (userDetails.getUsername().isBlank() || userDetails.getEmail().isBlank() || userDetails.getPassword().isBlank())
             throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 
-        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
+        UserDto userDto = mapper().mapComplex(userDetails, UserDto.class);
 
         UserDto updatedUser = userService.updateUser(id, userDto);
-        return modelMapper.map(updatedUser, UserRest.class);
+        return mapper().mapComplex(updatedUser, UserRest.class);
     }
 
     @DeleteMapping(
@@ -97,13 +90,10 @@ public class UserController {
     )
     public List<OrderRest> getUserOrders(@PathVariable String id) {
         List<OrderRest> orderRests = new ArrayList<>();
-        ModelMapper modelMapper = new ModelMapper();
-
         List<OrderDto> addressDtos = userService.getOrdersOfUser(id);
 
         if (addressDtos != null && !addressDtos.isEmpty()) {
-            Type listType = new TypeToken<List<OrderRest>>() {}.getType();
-            orderRests = modelMapper.map(addressDtos, listType);
+            orderRests = mapper().mapList(addressDtos, OrderRest.class);
         }
 
         return orderRests;
@@ -114,7 +104,6 @@ public class UserController {
             produces = { MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE }
     )
     public OrderRest getUserOrder(@PathVariable String userId , @PathVariable String orderId) {
-        ModelMapper modelMapper = new ModelMapper();
         UserDto userDto = userService.getUserByUserId(userId);
 
         if (userDto == null) throw new UserServiceException("User does note exist");
@@ -122,17 +111,16 @@ public class UserController {
         if (userDto.getOrders().isEmpty()) return null;
 
         for (OrderDto or: userDto.getOrders()) {
-            if (Objects.equals(or.getOrderId(), orderId)) return modelMapper.map(or, OrderRest.class);
+            if (Objects.equals(or.getOrderId(), orderId)) return mapper().mapComplex(or, OrderRest.class);
         }
         throw new OrderServiceException("Order does not exist");
     }
 
     @PostMapping(path = "/{userId}/orders", produces = { MediaType.APPLICATION_JSON_VALUE , MediaType.APPLICATION_XML_VALUE } )
     public OrderRest createNewOrder(@RequestBody OrderRequestModel order) {
-        OrderDto orderRest = orderService.createOrder(order);
-         Type listType = new TypeToken<OrderRest>() {}.getType();
-        return mapper().map(orderRest, OrderRest.class);
+        OrderDto orderRest = orderService.createOrder(mapper().mapComplex(order, OrderDto.class));
+        return mapper().mapComplex(orderRest, OrderRest.class);
     }
 
-    ModelMapper mapper() {return new ModelMapper();}
+    Mapper mapper() { return new Mapper(); }
 }

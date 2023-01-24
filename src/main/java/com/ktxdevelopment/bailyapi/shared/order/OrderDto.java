@@ -1,6 +1,7 @@
 package com.ktxdevelopment.bailyapi.shared.order;
 
 import com.ktxdevelopment.bailyapi.io.entity.order.OrderStateEntity;
+import com.ktxdevelopment.bailyapi.io.entity.user.UserEntity;
 import com.ktxdevelopment.bailyapi.shared.product.ProductOrderModelDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,8 @@ public class OrderDto {
     private String orderId;
 
     private Double totalPrice;
+
+    private UserEntity userDetails;
 
     private Double totalDiscount;
 

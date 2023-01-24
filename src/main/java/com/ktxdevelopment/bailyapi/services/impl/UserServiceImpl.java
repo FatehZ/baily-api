@@ -4,7 +4,7 @@ import com.ktxdevelopment.bailyapi.exceptions.UserServiceException;
 import com.ktxdevelopment.bailyapi.io.entity.user.UserEntity;
 import com.ktxdevelopment.bailyapi.io.repo.UserRepository;
 import com.ktxdevelopment.bailyapi.services.UserService;
-import com.ktxdevelopment.bailyapi.shared.Utils;
+import com.ktxdevelopment.bailyapi.util.Utils;
 import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
 import com.ktxdevelopment.bailyapi.shared.user.UserDto;
 import org.modelmapper.ModelMapper;

@@ -4,7 +4,7 @@ import com.ktxdevelopment.bailyapi.io.entity.order.OrderEntity;
 import com.ktxdevelopment.bailyapi.io.repo.OrderRepository;
 import com.ktxdevelopment.bailyapi.services.OrderService;
 import com.ktxdevelopment.bailyapi.shared.order.OrderDto;
-import org.modelmapper.ModelMapper;
+import com.ktxdevelopment.bailyapi.util.Mapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,12 +28,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderDto> getAllOrders(String id) {
         List<OrderEntity> orders = orderRepository.findAll();
-        Type type = new TypeToken<List<OrderDto>>() {}.getType();
 
-        return mapper().map(orders, type);
+        return mapper().mapList(orders, OrderDto.class);
     }
 
-    private ModelMapper mapper() {
-        return new ModelMapper();
+    @Override
+    public OrderDto createOrder(OrderDto order) {
+        OrderEntity newOrder = orderRepository.save(mapper().mapComplex(order, OrderEntity.class));
+        return mapper().mapComplex(newOrder, OrderDto.class);
+    }
+
+    private Mapper mapper() {
+        return new Mapper();
     }
 }

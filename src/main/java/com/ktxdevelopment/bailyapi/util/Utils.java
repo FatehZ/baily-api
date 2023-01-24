@@ -1,4 +1,4 @@
-package com.ktxdevelopment.bailyapi.shared;
+package com.ktxdevelopment.bailyapi.util;
 
 import org.springframework.stereotype.Component;
 

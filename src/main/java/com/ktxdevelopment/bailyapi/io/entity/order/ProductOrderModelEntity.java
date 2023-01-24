@@ -17,7 +17,7 @@ public class ProductOrderModelEntity {
 
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
     private Integer number = 0;
