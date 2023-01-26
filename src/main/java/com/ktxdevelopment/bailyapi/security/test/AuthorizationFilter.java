@@ -1,5 +1,6 @@
-package com.ktxdevelopment.bailyapi.security;
+package com.ktxdevelopment.bailyapi.security.test;
 
+import com.ktxdevelopment.bailyapi.security.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,8 +14,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static java.rmi.server.LogStream.log;
 
 
 @Slf4j
@@ -49,7 +48,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                     .parseClaimsJws(token)
                     .getBody().getSubject();
 
-            log(token);
+            log.debug("Token : " + token);
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@RequestMapping("/users")
+@RequestMapping("users")
 @RestController
 public class UserController {
 

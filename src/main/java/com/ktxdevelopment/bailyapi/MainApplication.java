@@ -13,22 +13,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ComponentScan(value = "com.ktxdevelopment.bailyapi.io.repo")
 public class MainApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MainApplication.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(MainApplication.class, args); }
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+	@Bean public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public SpringApplicationContext springApplicationContext() {
+	@Bean public SpringApplicationContext springApplicationContext() {
 		return new SpringApplicationContext();
 	}
 
-	@Bean("appProperties")
-	public AppProperties getAppProperties() {
-		return new AppProperties();
-	}
+	@Bean("appProperties") public AppProperties getAppProperties() {return new AppProperties();}
 }

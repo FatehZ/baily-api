@@ -1,7 +1,8 @@
-package com.ktxdevelopment.bailyapi.security;
+package com.ktxdevelopment.bailyapi.security.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktxdevelopment.bailyapi.SpringApplicationContext;
+import com.ktxdevelopment.bailyapi.security.SecurityConstants;
 import com.ktxdevelopment.bailyapi.services.UserService;
 import com.ktxdevelopment.bailyapi.shared.user.UserDto;
 import com.ktxdevelopment.bailyapi.ui.request.user.UserLoginRequestModel;
@@ -25,6 +26,7 @@ import java.util.Date;
 
 @Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
     public AuthenticationFilter(AuthenticationManager authenticationManager) { this.authenticationManager = authenticationManager; }
 
@@ -32,12 +34,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             UserLoginRequestModel creds = new ObjectMapper().readValue(request.getInputStream(), UserLoginRequestModel.class);
+            log.debug("Auth :");
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
         } catch (IOException e) {throw new RuntimeException(e);}
     }
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) {
-        String email = ((User) authResult.getPrincipal()).getUsername();   // username is email actually
+        String email = ((User) authResult.getPrincipal()).getUsername();
 
         String token = Jwts.builder()
                 .setSubject(email)
