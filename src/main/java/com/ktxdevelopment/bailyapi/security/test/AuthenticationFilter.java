@@ -2,7 +2,6 @@ package com.ktxdevelopment.bailyapi.security.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ktxdevelopment.bailyapi.SpringApplicationContext;
-import com.ktxdevelopment.bailyapi.security.SecurityConstants;
 import com.ktxdevelopment.bailyapi.services.UserService;
 import com.ktxdevelopment.bailyapi.shared.user.UserDto;
 import com.ktxdevelopment.bailyapi.ui.request.user.UserLoginRequestModel;
@@ -34,7 +33,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             UserLoginRequestModel creds = new ObjectMapper().readValue(request.getInputStream(), UserLoginRequestModel.class);
-            log.debug("Auth :");
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
         } catch (IOException e) {throw new RuntimeException(e);}
     }

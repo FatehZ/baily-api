@@ -1,4 +1,4 @@
-package com.ktxdevelopment.bailyapi.security;
+package com.ktxdevelopment.bailyapi.security.test;
 
 import com.ktxdevelopment.bailyapi.SpringApplicationContext;
 

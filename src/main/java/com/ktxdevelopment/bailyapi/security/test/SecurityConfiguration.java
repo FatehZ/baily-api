@@ -1,7 +1,5 @@
-package com.ktxdevelopment.bailyapi.security;
+package com.ktxdevelopment.bailyapi.security.test;
 
-import com.ktxdevelopment.bailyapi.security.test.AuthenticationFilter;
-import com.ktxdevelopment.bailyapi.security.test.AuthorizationFilter;
 import com.ktxdevelopment.bailyapi.services.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

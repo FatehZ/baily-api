@@ -1,6 +1,5 @@
 package com.ktxdevelopment.bailyapi.security.test;
 
-import com.ktxdevelopment.bailyapi.security.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

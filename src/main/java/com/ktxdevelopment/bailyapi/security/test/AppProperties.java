@@ -1,4 +1,4 @@
-package com.ktxdevelopment.bailyapi.security;
+package com.ktxdevelopment.bailyapi.security.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
