@@ -1,14 +1,16 @@
 package com.ktxdevelopment.bailyapi.security.auth;
 
 import com.ktxdevelopment.bailyapi.io.entity.user.Role;
+import com.ktxdevelopment.bailyapi.io.entity.user.UserEntity;
 import com.ktxdevelopment.bailyapi.io.repo.UserRepository;
 import com.ktxdevelopment.bailyapi.security.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +21,13 @@ public class AuthenticationService {
   private final AuthenticationManager authenticationManager;
 
   public AuthenticationResponse register(RegisterRequest request) {
-    var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
+    var user = UserEntity.builder()
+        .userId(UUID.randomUUID().toString())
+        .username(request.getUsername())
         .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
+        .encryptedPassword(passwordEncoder.encode(request.getPassword()))
         .role(Role.USER)
         .build();
-    repository.save(user);
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
         .token(jwtToken)
@@ -40,8 +41,7 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-    var user = repository.findByEmail(request.getEmail())
-        .orElseThrow();
+    var user = repository.findByEmail(request.getEmail());
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
         .token(jwtToken)

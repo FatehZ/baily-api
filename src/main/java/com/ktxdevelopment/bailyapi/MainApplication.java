@@ -1,6 +1,6 @@
 package com.ktxdevelopment.bailyapi;
 
-import com.ktxdevelopment.bailyapi.security.test.AppProperties;
+import com.ktxdevelopment.bailyapi.security.config.AppProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
