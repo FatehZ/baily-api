@@ -8,12 +8,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @Entity(name = "users")
+@NoArgsConstructor
 public class UserEntity implements Serializable, UserDetails {
 
     @Id @GeneratedValue private Long id;
@@ -24,17 +29,17 @@ public class UserEntity implements Serializable, UserDetails {
 
     @Column(nullable = false, length = 80) private String email;
 
-    @Column(nullable = false, length = 25) private String mobile;
+    @Column(nullable = true, length = 25) private String mobile;
 
     @Column(nullable = false) private String encryptedPassword;
 
-    @Column(nullable = false, length = 100) private String address;
-    @Enumerated(EnumType.STRING) private Role role;
+    @Column(nullable = true, length = 100) private String address = "";
+    @Enumerated(EnumType.STRING) private Role role = Role.USER;
 
-    @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL) List<OrderEntity> orders;
+    @OneToMany(mappedBy = "userDetails", cascade = CascadeType.ALL) List<OrderEntity> orders = new ArrayList<>();
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {return List.of(new SimpleGrantedAuthority(role.name()));}
+    public Collection<? extends GrantedAuthority> getAuthorities() { return List.of(new SimpleGrantedAuthority(role.name())); }
 
     @Override
     public String getPassword() {return encryptedPassword;}
